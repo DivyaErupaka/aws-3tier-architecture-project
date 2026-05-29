@@ -115,3 +115,13 @@ The database server stores application data and should never be directly exposed
 - Provides network isolation for the database tier.
 - Implements a secure three-tier architecture design.
 
+## Internet Gateway
+
+Created and attached Internet Gateway.
+
+Name:
+DevOps-IGW
+
+Purpose:
+
+Provides internet access to resources in public subnet.
