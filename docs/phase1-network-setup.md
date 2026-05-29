@@ -125,3 +125,124 @@ DevOps-IGW
 Purpose:
 
 Provides internet access to resources in public subnet.
+
+
+
+---
+
+## Public Route Table
+
+Created a route table for resources deployed in the public subnet.
+
+### Configuration
+
+| Setting | Value |
+|----------|--------|
+| Route Table Name | Public-RT |
+| Associated Subnet | Public-Subnet |
+| Destination | 0.0.0.0/0 |
+| Target | DevOps-IGW |
+
+### Purpose
+
+The Public Route Table enables internet connectivity for resources deployed in the Public Subnet.
+
+### Route Configuration
+
+| Destination | Target |
+|------------|---------|
+| 10.0.0.0/16 | Local |
+| 0.0.0.0/0 | Internet Gateway |
+
+### Planned Resources
+
+- Nginx Web Server
+- Bastion Host
+
+### Benefits
+
+- Allows inbound and outbound internet traffic.
+- Enables users to access web applications hosted on EC2 instances.
+- Provides connectivity for administrative access through SSH.
+
+---
+
+## Application Route Table
+
+Created a dedicated route table for the Application Subnet.
+
+### Configuration
+
+| Setting | Value |
+|----------|--------|
+| Route Table Name | App-RT |
+| Associated Subnet | App-Subnet |
+
+### Route Configuration
+
+| Destination | Target |
+|------------|---------|
+| 10.0.0.0/16 | Local |
+
+### Purpose
+
+The Application Route Table ensures that resources within the Application Subnet can communicate internally within the VPC while remaining inaccessible from the public internet.
+
+### Planned Resources
+
+- Apache Tomcat Server
+
+### Security Considerations
+
+- No direct route to the Internet Gateway.
+- Prevents public internet access.
+- Application server can only be accessed through approved network paths and security group rules.
+
+### Benefits
+
+- Improves security by isolating the application layer.
+- Supports a layered network architecture.
+- Reduces exposure to external threats.
+
+---
+
+## Database Route Table
+
+Created a dedicated route table for the Database Subnet.
+
+### Configuration
+
+| Setting | Value |
+|----------|--------|
+| Route Table Name | DB-RT |
+| Associated Subnet | DB-Subnet |
+
+### Route Configuration
+
+| Destination | Target |
+|------------|---------|
+| 10.0.0.0/16 | Local |
+
+### Purpose
+
+The Database Route Table allows the database server to communicate only within the VPC and prevents direct internet access.
+
+### Planned Resources
+
+- MySQL Database Server
+
+### Security Considerations
+
+- No route to the Internet Gateway.
+- Database instances remain isolated from public networks.
+- Database traffic is restricted through Security Groups and subnet isolation.
+
+### Benefits
+
+- Protects sensitive application data.
+- Implements network-level security.
+- Supports secure three-tier architecture design.
+
+### Screenshot
+
+08-db-route-table.png
