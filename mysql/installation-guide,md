@@ -1,0 +1,70 @@
+# 🐬 MySQL Installation Guide (DB Tier Setup)
+
+## 🎯 Objective
+
+This guide explains how to install and configure MySQL database server on an AWS EC2 instance in the private subnet as part of a 3-tier architecture.
+
+---
+
+## 🧱 Architecture Context
+
+MySQL is part of the Database Tier:
+
+Nginx → Tomcat → MySQL
+
+---
+
+## 🖥️ Prerequisites
+
+Before installation ensure:
+- EC2 instance is launched in private subnet
+- Security group allows port 3306 only from Tomcat SG
+- SSH access via Bastion/NAT is available
+- Linux OS (Amazon Linux / RHEL)
+
+---
+
+## 📦 Step 1: Update System Packages
+
+```bash
+sudo yum update -y
+
+Step 2: Install MySQL Server
+sudo yum install mysql-server -y
+🚀 Step 3: Start and Enable MySQL Service
+sudo systemctl start mysqld
+sudo systemctl enable mysqld
+🔍 Step 4: Check MySQL Service Status
+sudo systemctl status mysqld
+🔐 Step 5: Secure MySQL Installation
+sudo mysql_secure_installation
+Follow prompts:
+Set root password
+Remove anonymous users
+Disallow root remote login
+Remove test database
+Reload privilege tables
+🗄️ Step 6: Login to MySQL
+mysql -u root -p
+🧾 Step 7: Create Application Database
+CREATE DATABASE appdb;
+👤 Step 8: Create Application User
+CREATE USER 'appuser'@'%' IDENTIFIED BY 'App@12345';
+🔐 Step 9: Grant Privileges
+GRANT ALL PRIVILEGES ON appdb.* TO 'appuser'@'%';
+FLUSH PRIVILEGES;
+🌐 Step 10: Configure MySQL for Remote Access
+
+Open configuration file:
+
+sudo vi /etc/my.cnf
+
+Update:
+
+bind-address = 127.0.0.1
+
+To:
+
+bind-address = 0.0.0.0
+🔄 Step 11: Restart MySQL Service
+sudo systemctl restart mysqld
