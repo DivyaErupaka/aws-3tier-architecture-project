@@ -1,39 +1,67 @@
 #!/bin/bash
 
-echo "======================================="
-echo "Installing Java"
-echo "======================================="
+set -e
+
+echo "========================================"
+echo "Updating Packages"
+echo "========================================"
 
 sudo dnf update -y
 
-sudo dnf install java-17-amazon-corretto -y
+echo "========================================"
+echo "Installing Java 22"
+echo "========================================"
+
+sudo dnf install java-22-amazon-corretto -y
+
+echo "========================================"
+echo "Verifying Java"
+echo "========================================"
 
 java -version
 
-echo "======================================="
+echo "========================================"
 echo "Creating Tomcat User"
-echo "======================================="
+echo "========================================"
 
-sudo useradd -m -U -d /opt/tomcat -s /bin/false tomcat
+sudo useradd -r -m -U -d /opt/tomcat -s /bin/false tomcat || true
 
-echo "======================================="
-echo "Downloading Tomcat"
-echo "======================================="
+echo "========================================"
+echo "Downloading Tomcat 10.1.55"
+echo "========================================"
 
 cd /tmp
 
-wget https://downloads.apache.org/tomcat/tomcat-10/v10.1.42/bin/apache-tomcat-10.1.42.tar.gz
+wget https://archive.apache.org/dist/tomcat/tomcat-10/v10.1.55/bin/apache-tomcat-10.1.55.tar.gz
+
+echo "========================================"
+echo "Creating Tomcat Directory"
+echo "========================================"
 
 sudo mkdir -p /opt/tomcat
 
-sudo tar -xzf apache-tomcat-10.1.42.tar.gz -C /opt/tomcat --strip-components=1
+echo "========================================"
+echo "Extracting Tomcat"
+echo "========================================"
 
-echo "======================================="
+sudo tar -xzf apache-tomcat-10.1.55.tar.gz \
+-C /opt/tomcat \
+--strip-components=1
+
+echo "========================================"
 echo "Setting Permissions"
-echo "======================================="
+echo "========================================"
 
 sudo chown -R tomcat:tomcat /opt/tomcat
 
 sudo chmod -R 755 /opt/tomcat
 
-echo "Tomcat installation completed."
+echo "========================================"
+echo "Making Scripts Executable"
+echo "========================================"
+
+sudo chmod +x /opt/tomcat/bin/*.sh
+
+echo "========================================"
+echo "Tomcat Installation Completed"
+echo "========================================"
